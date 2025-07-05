@@ -10,14 +10,12 @@ const Hero = () => {
             {/* Main Heading */}
             <div className="space-y-6">
               <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-primary-900 leading-tight">
-                Connect with{' '}
-                <span className="text-primary-600">Developers</span>{' '}
-                Worldwide
+                Show your code today and{' '}
+                <span className="italic">inspire others</span>{' '}
+                every single day
               </h1>
-              <p className="text-xl text-secondary-600 leading-relaxed max-w-2xl">
-                Join the largest community of developers. Share knowledge, 
-                collaborate on projects, and grow your career with like-minded 
-                professionals from around the globe.
+              <p className="text-xl text-gray-500 leading-relaxed max-w-2xl">
+                Showcase your work, share ideas, and connect with developers like you.
               </p>
             </div>
 
