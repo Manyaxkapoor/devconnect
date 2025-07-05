@@ -1,120 +1,81 @@
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowUpRight, MessageCircle } from 'lucide-react';
+import heroImg from '../assets/hero-mockup.jpg'; // You should add your image to src/assets and name it hero-mockup.jpg
+
+const floatKeyframes = `
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+@keyframes floatX {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(10px); }
+}
+`;
 
 const Hero = () => {
   return (
     <section className="bg-white py-20 lg:py-32">
+      <style>{floatKeyframes}</style>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-5 gap-12 lg:gap-16 items-center">
-          {/* Left Column - Content (60% width on large screens) */}
-          <div className="lg:col-span-3 space-y-8">
-            {/* Main Heading */}
-            <div className="space-y-6">
-              <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-primary-900 leading-tight">
-                Show your code today and{' '}
-                <span className="italic">inspire others</span>{' '}
-                every single day
-              </h1>
-              <p className="text-xl text-gray-500 leading-relaxed max-w-2xl">
-                Showcase your work, share ideas, and connect with developers like you.
-              </p>
-            </div>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
-              <button className="bg-primary-600 hover:bg-primary-700 text-white font-semibold py-4 px-8 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2 shadow-medium hover:shadow-large">
-                <span>Get Started Free</span>
-                <ArrowRight size={20} />
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-0">
+          {/* Left Column */}
+          <div className="w-full lg:w-3/5 flex flex-col justify-center">
+            <h1 className="font-display font-bold text-4xl sm:text-5xl lg:text-[3.5rem] leading-[1.1] mb-6">
+              <span className="block bg-gradient-to-b from-gray-200 via-gray-400 to-black bg-clip-text text-transparent">
+                Show your code
+              </span>
+              <span className="block">
+                today and <span className="italic font-normal">inspire</span>
+              </span>
+              <span className="block">
+                <span className="italic font-normal">others</span> every
+              </span>
+              <span className="block">single day</span>
+            </h1>
+            <p className="text-lg sm:text-xl text-[#6B7280] mb-8 max-w-xl">
+              Showcase your work, share ideas, and connect with developers like you.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button className="flex items-center gap-2 bg-black text-white font-semibold py-3 px-6 rounded-full shadow-md hover:bg-gray-900 transition">
+                Get Started <ArrowUpRight size={18} />
               </button>
-              <button className="border-2 border-secondary-300 hover:border-primary-400 text-secondary-700 hover:text-primary-600 font-semibold py-4 px-8 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 bg-white hover:bg-primary-50">
-                <Play size={20} className="text-primary-500" />
-                <span>Watch Demo</span>
+              <button className="flex items-center gap-2 bg-white text-gray-900 font-semibold py-3 px-6 rounded-full shadow-sm border border-gray-100 hover:bg-gray-50 transition">
+                Learn More
               </button>
-            </div>
-
-            {/* Social Proof */}
-            <div className="pt-8 border-t border-secondary-200">
-              <p className="text-secondary-500 text-sm mb-4">Trusted by developers from</p>
-              <div className="flex items-center space-x-6 opacity-60">
-                <div className="text-2xl font-bold text-primary-600">500+</div>
-                <div className="text-secondary-400">|</div>
-                <div className="text-sm text-secondary-600">Companies</div>
-                <div className="text-secondary-400">|</div>
-                <div className="text-2xl font-bold text-primary-600">50K+</div>
-                <div className="text-secondary-400">|</div>
-                <div className="text-sm text-secondary-600">Developers</div>
-              </div>
             </div>
           </div>
-
-          {/* Right Column - Device Mockup (40% width on large screens) */}
-          <div className="lg:col-span-2 flex justify-center lg:justify-end">
-            <div className="relative">
-              {/* Main Device Frame */}
-              <div className="relative bg-gradient-to-br from-secondary-800 to-secondary-900 rounded-3xl p-3 shadow-2xl">
-                <div className="bg-white rounded-2xl overflow-hidden w-80 h-96">
-                  {/* Device Screen Content */}
-                  <div className="h-full bg-gradient-to-br from-primary-50 to-secondary-100 p-6">
-                    {/* Mockup Header */}
-                    <div className="flex items-center justify-between mb-6">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-10 h-10 bg-primary-500 rounded-full flex items-center justify-center">
-                          <span className="text-white font-bold text-sm">DC</span>
-                        </div>
-                        <div>
-                          <div className="font-semibold text-secondary-800">DevConnect</div>
-                          <div className="text-xs text-secondary-500">Online now</div>
-                        </div>
-                      </div>
-                      <div className="flex space-x-1">
-                        <div className="w-2 h-2 bg-success-500 rounded-full"></div>
-                        <div className="w-2 h-2 bg-warning-500 rounded-full"></div>
-                        <div className="w-2 h-2 bg-error-500 rounded-full"></div>
-                      </div>
-                    </div>
-
-                    {/* Mockup Content */}
-                    <div className="space-y-4">
-                      {/* Message Bubbles */}
-                      <div className="flex space-x-2">
-                        <div className="w-8 h-8 bg-secondary-300 rounded-full flex-shrink-0"></div>
-                        <div className="bg-white rounded-2xl rounded-tl-md px-4 py-2 max-w-48">
-                          <p className="text-sm text-secondary-700">Hey! How's the React project going?</p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex space-x-2 justify-end">
-                        <div className="bg-primary-500 rounded-2xl rounded-tr-md px-4 py-2 max-w-48">
-                          <p className="text-sm text-white">Great! Just finished the component structure</p>
-                        </div>
-                        <div className="w-8 h-8 bg-primary-500 rounded-full flex-shrink-0"></div>
-                      </div>
-
-                      <div className="flex space-x-2">
-                        <div className="w-8 h-8 bg-secondary-300 rounded-full flex-shrink-0"></div>
-                        <div className="bg-white rounded-2xl rounded-tl-md px-4 py-2 max-w-40">
-                          <p className="text-sm text-secondary-700">Awesome! Can't wait to see it</p>
-                        </div>
-                      </div>
-
-                      {/* Typing Indicator */}
-                      <div className="flex space-x-2">
-                        <div className="w-8 h-8 bg-secondary-300 rounded-full flex-shrink-0"></div>
-                        <div className="bg-white rounded-2xl rounded-tl-md px-4 py-3">
-                          <div className="flex space-x-1">
-                            <div className="w-2 h-2 bg-secondary-400 rounded-full animate-bounce"></div>
-                            <div className="w-2 h-2 bg-secondary-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                            <div className="w-2 h-2 bg-secondary-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+          {/* Right Column */}
+          <div className="w-full lg:w-2/5 flex justify-center lg:justify-end mt-12 lg:mt-0 relative">
+            {/* Subtle shadowed duplicate */}
+            <div className="absolute top-4 left-4 w-[400px] h-[400px] rounded-3xl bg-gray-300 opacity-15 blur-[2px] z-0 hidden lg:block" />
+            {/* Main image with subtle effect */}
+            <img
+              src={heroImg}
+              alt="Device mockup"
+              className="relative z-10 w-[400px] h-[400px] object-cover rounded-3xl border-4 border-white transition duration-300 hover:grayscale-[30%] hover:brightness-95"
+            />
+            {/* Floating message bubbles */}
+            <div className="hidden lg:block">
+              {/* Top left message */}
+              <div className="absolute -top-8 left-8 bg-white shadow-lg rounded-xl px-4 py-2 flex items-center gap-2 animate-fade-in z-20" style={{animation: 'floatY 3.5s ease-in-out infinite'}}>
+                <MessageCircle size={18} className="text-primary-500" />
+                <span className="text-sm font-medium text-gray-700 whitespace-nowrap">Nice work!</span>
               </div>
-
-              {/* Floating Elements */}
-              <div className="absolute -top-4 -right-4 w-16 h-16 bg-accent-400 rounded-full opacity-80 animate-bounce-gentle"></div>
-              <div className="absolute -bottom-6 -left-6 w-12 h-12 bg-primary-300 rounded-full opacity-60 animate-bounce-gentle" style={{animationDelay: '1s'}}></div>
+              {/* Bottom right message */}
+              <div className="absolute bottom-6 -right-24 bg-primary-600 text-white shadow-lg rounded-xl px-4 py-2 flex items-center gap-2 animate-slide-up z-20" style={{animation: 'floatX 4s 1s ease-in-out infinite'}}>
+                <span className="text-sm font-medium whitespace-nowrap">Let's connect!</span>
+                <MessageCircle size={18} className="text-white" />
+              </div>
+              {/* Top right message - moved down to overlap image, floating */}
+              <div className="absolute top-16 right-9 bg-white shadow-md rounded-xl px-4 py-2 flex items-center gap-2 animate-fade-in z-20" style={{animation: 'floatY 4.2s 0.5s ease-in-out infinite'}}>
+                <MessageCircle size={18} className="text-accent-500" />
+                <span className="text-sm font-medium text-gray-700 whitespace-nowrap">Welcome aboard!</span>
+              </div>
+              {/* Left center message - touching the image, floating */}
+              <div className="absolute top-1/2 -translate-y-1/2 -left-2 bg-secondary-100 shadow rounded-xl px-4 py-2 flex items-center gap-2 animate-slide-up z-20" style={{animation: 'floatX 3.8s 0.7s ease-in-out infinite'}}>
+                <MessageCircle size={18} className="text-secondary-600" />
+                <span className="text-sm font-medium text-secondary-700 whitespace-nowrap">Great project!</span>
+              </div>
             </div>
           </div>
         </div>
