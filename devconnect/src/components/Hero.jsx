@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { ArrowUpRight, MessageCircle } from 'lucide-react';
 import heroImg from '../assets/hero-mockup.jpg';
+import AuthModal from './AuthModal';
 
 const floatKeyframes = `
 @keyframes floatY {
@@ -13,6 +15,8 @@ const floatKeyframes = `
 `;
 
 const Hero = () => {
+  const [authOpen, setAuthOpen] = useState(false);
+
   return (
     <section className="bg-white py-20 lg:py-32 font-sans">
       <style>{floatKeyframes}</style>
@@ -36,7 +40,12 @@ const Hero = () => {
               Showcase your work, share ideas, and connect with developers like you.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <button className="flex items-center gap-2 bg-black text-white font-semibold py-3 px-6 rounded-full shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-black/50 transition-all duration-200" tabIndex={0} aria-label="Get Started">
+              <button
+                className="flex items-center gap-2 bg-black text-white font-semibold py-3 px-6 rounded-full shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-black/50 transition-all duration-200"
+                tabIndex={0}
+                aria-label="Get Started"
+                onClick={() => setAuthOpen(true)}
+              >
                 Get Started <ArrowUpRight size={18} />
               </button>
               <button className="flex items-center gap-2 bg-white text-black font-semibold py-3 px-6 rounded-full shadow-sm border border-gray-200 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black/30 transition-all duration-200" tabIndex={0} aria-label="Learn More">
@@ -76,7 +85,7 @@ const Hero = () => {
                 <MessageCircle size={18} className="text-white" />
               </div>
               {/* Top right message - moved down to overlap image, floating */}
-              <div className="absolute top-16 right-19 bg-white shadow-md rounded-xl px-4 py-2 flex items-center gap-2 animate-fade-in z-20 border border-gray-200" style={{animation: 'floatY 4.2s 0.5s ease-in-out infinite'}}>
+              <div className="absolute top-16 right-17 bg-white shadow-md rounded-xl px-4 py-2 flex items-center gap-2 animate-fade-in z-20 border border-gray-200" style={{animation: 'floatY 4.2s 0.5s ease-in-out infinite'}}>
                 <MessageCircle size={18} className="text-accent-500" />
                 <span className="text-sm font-medium text-gray-700 whitespace-nowrap">Welcome aboard!</span>
               </div>
@@ -89,6 +98,7 @@ const Hero = () => {
           </div>
         </div>
       </div>
+      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} />
     </section>
   );
 };
