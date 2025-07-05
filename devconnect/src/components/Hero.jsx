@@ -1,5 +1,5 @@
 import { ArrowUpRight, MessageCircle } from 'lucide-react';
-import heroImg from '../assets/hero-mockup.jpg'; // You should add your image to src/assets and name it hero-mockup.jpg
+import heroImg from '../assets/hero-mockup.jpg';
 
 const floatKeyframes = `
 @keyframes floatY {
@@ -21,7 +21,7 @@ const Hero = () => {
           {/* Left Column */}
           <div className="w-full lg:w-3/5 flex flex-col justify-center">
             <h1 className="font-display font-bold text-4xl sm:text-5xl lg:text-[3.5rem] leading-[1.1] mb-6">
-              <span className="block bg-gradient-to-b from-gray-200 via-gray-400 to-black bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-b from-gray-200 via-gray-500 to-black bg-clip-text text-transparent">
                 Show your code
               </span>
               <span className="block">
@@ -44,16 +44,25 @@ const Hero = () => {
               </button>
             </div>
           </div>
-          {/* Right Column */}
-          <div className="w-full lg:w-2/5 flex justify-center lg:justify-end mt-12 lg:mt-0 relative">
-            {/* Subtle shadowed duplicate */}
-            <div className="absolute top-4 left-4 w-[400px] h-[400px] rounded-3xl bg-gray-300 opacity-15 blur-[2px] z-0 hidden lg:block" />
-            {/* Main image with subtle effect */}
-            <img
-              src={heroImg}
-              alt="Device mockup"
-              className="relative z-10 w-[400px] h-[400px] object-cover rounded-3xl border-4 border-white transition duration-300 hover:grayscale-[30%] hover:brightness-95"
-            />
+          {/* Right Column - Modern Tablet Mockup */}
+          <div className="w-full lg:w-2/5 flex justify-center lg:justify-end mt-12 lg:mt-0 relative items-center">
+            {/* Device mockup */}
+            <div className="relative z-10 flex items-center">
+              {/* Device frame */}
+              <div className="w-[480px] h-[360px] rounded-[2.5rem] bg-gradient-to-br from-gray-200 via-gray-100 to-gray-400 border border-gray-300 shadow-2xl flex items-center justify-center">
+                {/* Screen area */}
+                <div className="w-[430px] h-[312px] rounded-[2rem] bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 shadow-inner overflow-hidden flex items-center justify-center">
+                  {/* Screen content (hero image) */}
+                  <img
+                    src={heroImg}
+                    alt="Device mockup"
+                    className="object-cover w-full h-full rounded-[1.7rem] opacity-90"
+                  />
+                </div>
+              </div>
+              {/* Subtle shadow below device */}
+              <div className="absolute left-1/2 -bottom-8 -translate-x-1/2 w-96 h-10 bg-black/20 rounded-full blur-md z-0" />
+            </div>
             {/* Floating message bubbles */}
             <div className="hidden lg:block">
               {/* Top left message */}
