@@ -4,6 +4,8 @@ A modern frontend developer portfolio platform to **showcase your projects**, **
 
 This is a frontend-only project built with React + TailwindCSS, featuring **authentication and storage powered by Supabase**. Designed fully in Figma, the UI is clean, responsive, and production-ready — ideal for a personal portfolio or developer showcase site.
 
+ Live Demo: [devconnect456.vercel.app](https://devconnect456.vercel.app/)
+
 ---
 
 ## ✨ Features
@@ -32,6 +34,10 @@ This is a frontend-only project built with React + TailwindCSS, featuring **auth
   - Postgres DB
   - Public Storage Buckets
 - **Design**: [Figma](https://www.figma.com/design/gr5GtjtqHpAlbMZ7qcIpCJ/dev-connect-idea?node-id=0-1&t=itl3jssRbhpTx6uR-1) (Custom UI layout)
+
+##📸 Screenshots
+![image](https://github.com/user-attachments/assets/94d506d5-1f13-42e9-9564-ea83941ac1d3)
+
 
 ---
 
