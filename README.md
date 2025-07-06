@@ -37,6 +37,8 @@ This is a frontend-only project built with React + TailwindCSS, featuring **auth
 
 ##📸 Screenshots
 ![image](https://github.com/user-attachments/assets/94d506d5-1f13-42e9-9564-ea83941ac1d3)
+![image](https://github.com/user-attachments/assets/6b7cc43d-ceb0-4d9a-928b-a231f56fe3bc)
+
 
 
 ---
