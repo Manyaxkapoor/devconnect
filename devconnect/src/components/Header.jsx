@@ -1,13 +1,32 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Menu, X } from 'lucide-react';
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [showHeader, setShowHeader] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
+
+  // Smart sticky header logic
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY < 10) {
+        setShowHeader(true);
+      } else if (currentScrollY > lastScrollY) {
+        setShowHeader(false); // Hide on scroll down
+      } else {
+        setShowHeader(true); // Show on scroll up
+      }
+      setLastScrollY(currentScrollY);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
 
   // Dispatch a custom event to open the auth modal
   const openAuthModal = () => {
@@ -16,15 +35,15 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white sticky top-0 z-50">
+    <header className={`bg-white sticky top-0 z-50 transition-transform duration-300 ${showHeader ? 'translate-y-0' : '-translate-y-full'}`} style={{ willChange: 'transform' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex-shrink-0">
-            <Link to="/">
+          <div className="flex-shrink-0 flex items-center h-16">
+            <Link to="/" className="flex items-center h-full">
               <h1
-                className="font-sans text-2xl font-bold text-black transition-all duration-300 bg-clip-text hover:text-transparent hover:bg-gradient-to-r hover:from-blue-500 hover:via-blue-600 hover:to-blue-700 transform hover:scale-105"
-                style={{ fontFamily: 'Inter, sans-serif', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'black' }}
+                className="text-2xl font-bold text-black tracking-tight transition-all duration-300 cursor-pointer hover:text-blue-700 hover:-translate-y-1 flex items-center h-full"
+                style={{ letterSpacing: '-0.03em', fontFamily: 'Inter, sans-serif', lineHeight: '1.2' }}
               >
                 DevConnect
               </h1>
