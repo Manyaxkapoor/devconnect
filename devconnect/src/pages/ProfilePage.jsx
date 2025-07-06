@@ -43,7 +43,7 @@ export default function ProfilePage() {
       id: user.id,
       ...newProfile,
     });
-    // Refetch profile from Supabase to ensure latest data
+    // Re-fetch profile from Supabase
     const { data } = await supabase
       .from("users")
       .select("*")
