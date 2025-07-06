@@ -5,6 +5,7 @@ export default function EditProfileModal({ isOpen, onClose, profile, onSave }) {
   const [form, setForm] = useState(profile);
   const [avatarUploading, setAvatarUploading] = useState(false);
   const [avatarPreview, setAvatarPreview] = useState(form.avatar);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     setForm(profile);
@@ -45,9 +46,11 @@ export default function EditProfileModal({ isOpen, onClose, profile, onSave }) {
     setAvatarPreview("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSave(form);
+    setSaving(true);
+    await onSave(form);
+    setSaving(false);
     onClose();
   };
 
@@ -125,9 +128,9 @@ export default function EditProfileModal({ isOpen, onClose, profile, onSave }) {
             <button
               type="submit"
               className="flex-1 py-2 rounded-xl bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold shadow hover:from-blue-600 hover:to-blue-800"
-              disabled={avatarUploading}
+              disabled={avatarUploading || saving}
             >
-              {avatarUploading ? 'Uploading...' : 'Save'}
+              {avatarUploading ? 'Uploading...' : saving ? 'Saving...' : 'Save'}
             </button>
           </div>
         </form>

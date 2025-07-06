@@ -39,11 +39,17 @@ export default function ProfilePage() {
   // Save profile to Supabase
   const handleSave = async (newProfile) => {
     if (!user) return;
-    setProfile(newProfile);
     await supabase.from("users").upsert({
       id: user.id,
       ...newProfile,
     });
+    // Refetch profile from Supabase to ensure latest data
+    const { data } = await supabase
+      .from("users")
+      .select("*")
+      .eq("id", user.id)
+      .single();
+    if (data) setProfile(data);
   };
 
   if (!user) {
