@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ArrowUpRight, MessageCircle } from 'lucide-react';
 import heroImg from '../assets/hero-mockup.jpg';
 import AuthModal from './AuthModal';
@@ -18,14 +18,21 @@ const floatKeyframes = `
 const Hero = () => {
   const [authOpen, setAuthOpen] = useState(false);
 
+  // Listen for open-auth-modal event
+  useEffect(() => {
+    const handler = () => setAuthOpen(true);
+    window.addEventListener('open-auth-modal', handler);
+    return () => window.removeEventListener('open-auth-modal', handler);
+  }, []);
+
   return (
     <section className="bg-white py-20 lg:py-32 font-sans">
       <style>{floatKeyframes}</style>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-16 lg:gap-0">
           {/* Left Column */}
-          <div className="w-full lg:w-3/5 flex flex-col justify-center">
-            <h1 className="font-display font-bold text-black text-4xl sm:text-5xl lg:text-[3.5rem] leading-[1.1] mb-8">
+          <div className="w-full lg:w-3/5 flex flex-col justify-center animate-fade-in-up">
+            <h1 className="font-display font-bold text-black text-4xl sm:text-5xl lg:text-[3.5rem] leading-[1.1] mb-8 transition-all duration-700 animate-slide-in-left">
               <span className="block bg-gradient-to-b from-gray-200 via-gray-500 to-black bg-clip-text text-transparent">
                 Show your code
               </span>
@@ -37,12 +44,13 @@ const Hero = () => {
               </span>
               <span className="block">single day</span>
             </h1>
-            <p className="text-lg sm:text-xl text-gray-500 mb-10 max-w-xl">
+            <p className="text-lg sm:text-xl text-gray-500 mb-10 max-w-xl animate-fade-in-up delay-200">
               Showcase your work, share ideas, and connect with developers like you.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up delay-300">
               <button
-                className="flex items-center gap-2 bg-black text-white font-semibold py-3 px-6 rounded-full shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-black/50 transition-all duration-200"
+                id="get-started-btn"
+                className="flex items-center gap-2 bg-black text-white font-semibold py-3 px-6 rounded-full shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-black/50 transition-all duration-200 text-lg"
                 tabIndex={0}
                 aria-label="Get Started"
                 onClick={() => setAuthOpen(true)}
@@ -55,11 +63,11 @@ const Hero = () => {
             </div>
           </div>
           {/* Right Column - Modern Tablet Mockup */}
-          <div className="w-full lg:w-2/5 flex justify-center lg:justify-end mt-12 lg:mt-0 relative items-center">
+          <div className="w-full lg:w-2/5 flex justify-center lg:justify-end mt-12 lg:mt-0 relative items-center animate-slide-in-right">
             {/* Device mockup */}
-            <div className="relative z-10 flex items-center">
+            <div className="relative z-10 flex items-center group">
               {/* Device frame */}
-              <div className="w-[480px] h-[360px] rounded-[2.5rem] bg-gradient-to-br from-gray-200 via-gray-100 to-gray-400 border border-gray-300 shadow-xl flex items-center justify-center">
+              <div className="w-[480px] h-[360px] rounded-[2.5rem] bg-gradient-to-br from-gray-200 via-gray-100 to-gray-400 border border-gray-300 shadow-xl flex items-center justify-center transition-transform duration-500 group-hover:scale-105 group-hover:shadow-2xl group-hover:-rotate-2">
                 {/* Screen area */}
                 <div className="w-[430px] h-[312px] rounded-[2rem] bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 shadow-inner overflow-hidden flex items-center justify-center">
                   {/* Screen content (hero image) */}
@@ -100,53 +108,74 @@ const Hero = () => {
         </div>
       </div>
       <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} />
+      <style>{`
+        @keyframes fade-in-up {
+          0% { opacity: 0; transform: translateY(20px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up {
+          animation: fade-in-up 0.7s cubic-bezier(.4,2,.6,1) both;
+        }
+        @keyframes slide-in-left {
+          0% { opacity: 0; transform: translateX(-40px); }
+          100% { opacity: 1; transform: translateX(0); }
+        }
+        .animate-slide-in-left {
+          animation: slide-in-left 0.8s cubic-bezier(.4,2,.6,1) both;
+        }
+        @keyframes slide-in-right {
+          0% { opacity: 0; transform: translateX(40px); }
+          100% { opacity: 1; transform: translateX(0); }
+        }
+        .animate-slide-in-right {
+          animation: slide-in-right 0.8s cubic-bezier(.4,2,.6,1) both;
+        }
+      `}</style>
     </section>
   );
 };
 
 const AboutSection = () => {
   const navigate = useNavigate();
+  // Scroll to top handler
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Open login modal handler (reuse from Hero)
+  const openAuth = () => document.getElementById('get-started-btn')?.click();
   return (
-    <section id="about" className="relative overflow-hidden bg-gradient-to-br from-black via-gray-900 to-gray-700 py-16">
-      {/* Animated background gradient */}
-      <div className="absolute inset-0 z-0 animate-gradient-move bg-gradient-to-tr from-black via-gray-800 to-gray-700 opacity-70" style={{filter: 'blur(40px)'}} />
-      <div className="relative z-10 max-w-5xl mx-auto px-4 flex flex-col md:flex-row items-center md:items-stretch gap-0 md:gap-0">
-        <div className="w-full md:w-[340px] flex-shrink-0 flex items-center justify-start">
+    <section id="about" className="bg-white py-20">
+      <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center md:items-stretch gap-0 md:gap-12">
+        <div className="w-full md:w-[420px] flex-shrink-0 flex items-center justify-center md:justify-start mb-8 md:mb-0">
           <img
-            src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=600&q=80"
+            src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80"
             alt="Developers collaborating"
-            className="rounded-2xl shadow-2xl border-4 border-white transition-transform duration-300 hover:scale-105 cursor-pointer w-full h-[320px] object-cover md:object-cover md:h-full md:w-[320px]"
-            style={{ boxShadow: '0 8px 40px 0 rgba(80,80,180,0.18), 0 1.5px 8px 0 rgba(80,80,180,0.10)' }}
-            onClick={() => navigate('/')} // Go home on click
+            className="rounded-2xl shadow-lg border border-gray-200 w-full h-[400px] object-cover md:w-[380px] md:h-[400px] transition-transform duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer"
+            style={{ maxWidth: 420, background: '#f8f8f8', fontFamily: 'Inter, sans-serif' }}
+            onClick={scrollToTop}
           />
         </div>
-        <div className="flex-1 flex flex-col justify-center pl-0 md:pl-12 py-8 md:py-0">
+        <div className="flex-1 flex flex-col justify-center pl-0 md:pl-16">
           <h2
-            className="text-3xl font-bold mb-4 text-white cursor-pointer hover:text-blue-400 transition-colors duration-200"
-            onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
+            className="text-4xl font-extrabold text-black tracking-tight mb-6 transition-all duration-300 cursor-pointer hover:text-blue-700 hover:-translate-y-1"
+            style={{ letterSpacing: '-0.03em', fontFamily: 'Inter, sans-serif' }}
+            onClick={scrollToTop}
           >
-            About DevConnect
+            ABOUT DEVCONNECT
           </h2>
-          <div className="h-1 w-16 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full mb-4" />
-          <p className="text-xl text-gray-200 mb-4 leading-relaxed max-w-2xl">
+          <p className="text-lg text-gray-700 mb-4 leading-relaxed max-w-2xl font-normal">
             DevConnect is a modern platform for developers to showcase their work, share ideas, and connect with like-minded creators. Whether you're building your first project or launching your next big thing, DevConnect is your space to inspire and be inspired.
           </p>
-          <p className="text-lg text-gray-400 max-w-2xl">
+          <p className="text-base text-gray-500 max-w-2xl font-normal mb-8">
             Join a vibrant community, discover new opportunities, and let your code speak for itself. We believe every developer has a story worth sharing—let's build the future together.
           </p>
+          <button
+            className="inline-block bg-black text-white font-semibold py-3 px-8 rounded-full shadow hover:bg-gray-900 transition-all duration-200 text-lg"
+            onClick={openAuth}
+          >
+            Get Started
+          </button>
+        
         </div>
       </div>
-      {/* Animated gradient keyframes */}
-      <style>{`
-        @keyframes gradient-move {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
-        .animate-gradient-move {
-          background-size: 200% 200%;
-          animation: gradient-move 8s ease-in-out infinite;
-        }
-      `}</style>
     </section>
   );
 };

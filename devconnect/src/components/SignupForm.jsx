@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { supabase } from '../supabaseClient';
+import { useToast } from '../context/ToastContext';
 
 const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
 
@@ -9,13 +10,15 @@ const SignupForm = ({ onLoginClick, onSuccess }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const toast = useToast();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
     if (!name.trim()) {
-      setError('Please enter your name.');
+      setError('Name is required');
+      setLoading(false);
       return;
     }
     if (!validateEmail(email)) {
@@ -31,6 +34,7 @@ const SignupForm = ({ onLoginClick, onSuccess }) => {
     if (error) {
       setError(error.message);
     } else {
+      toast.showToast('Check your email and verify your account to log in.', 'success');
       if (onSuccess) onSuccess();
     }
   };

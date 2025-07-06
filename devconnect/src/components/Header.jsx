@@ -9,14 +9,23 @@ const Header = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
+  // Dispatch a custom event to open the auth modal
+  const openAuthModal = () => {
+    window.dispatchEvent(new CustomEvent('open-auth-modal'));
+    setIsMobileMenuOpen(false);
+  };
+
   return (
-    <header className="bg-white shadow-soft sticky top-0 z-50">
+    <header className="bg-white sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link to="/">
-              <h1 className="font-display text-2xl font-bold text-primary-800">
+              <h1
+                className="font-sans text-2xl font-bold text-black transition-all duration-300 bg-clip-text hover:text-transparent hover:bg-gradient-to-r hover:from-blue-500 hover:via-blue-600 hover:to-blue-700 transform hover:scale-105"
+                style={{ fontFamily: 'Inter, sans-serif', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'black' }}
+              >
                 DevConnect
               </h1>
             </Link>
@@ -26,25 +35,25 @@ const Header = () => {
           <nav className="hidden md:flex items-center space-x-8">
             <Link 
               to="/" 
-              className="text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200"
+              className="text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200 rounded-lg px-3 py-1 hover:bg-gray-100"
             >
               Home
             </Link>
             <a 
               href="#about" 
-              className="text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200"
+              className="text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200 rounded-lg px-3 py-1 hover:bg-gray-100"
             >
               About
             </a>
             <Link 
               to="/projects" 
-              className="text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200"
+              className="text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200 rounded-lg px-3 py-1 hover:bg-gray-100"
             >
               Projects
             </Link>
             <Link 
               to="/profile" 
-              className="text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200"
+              className="text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200 rounded-lg px-3 py-1 hover:bg-gray-100"
             >
               Profile
             </Link>
@@ -52,7 +61,7 @@ const Header = () => {
 
           {/* Desktop CTA Button */}
           <div className="hidden md:flex items-center">
-            <button className="bg-black hover:bg-gray-800 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200 flex items-center space-x-2">
+            <button onClick={openAuthModal} className="bg-black hover:bg-gray-800 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200 flex items-center space-x-2">
               <span>Get Started</span>
               <ArrowRight size={16} />
             </button>
@@ -102,7 +111,7 @@ const Header = () => {
                 Profile
               </Link>
               <div className="pt-4">
-                <button className="w-full bg-black hover:bg-gray-800 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2">
+                <button onClick={openAuthModal} className="w-full bg-black hover:bg-gray-800 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2">
                   <span>Get Started</span>
                   <ArrowRight size={16} />
                 </button>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { supabase } from '../supabaseClient';
+import { useNavigate } from 'react-router-dom';
 
 const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
 
@@ -11,6 +12,7 @@ const LoginForm = ({ onSignupClick, onSuccess }) => {
   const [showReset, setShowReset] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
   const [resetMsg, setResetMsg] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,6 +32,7 @@ const LoginForm = ({ onSignupClick, onSuccess }) => {
       setError(error.message);
     } else {
       if (onSuccess) onSuccess();
+      navigate('/profile');
     }
   };
 
@@ -52,18 +55,18 @@ const LoginForm = ({ onSignupClick, onSuccess }) => {
       </div>
       <h2 className="text-2xl font-bold text-black mb-8 text-center">Sign in</h2>
       {showReset ? (
-        <form onSubmit={handleReset} className="space-y-4">
+        <form onSubmit={handleReset} className="space-y-4 w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto">
           <input
             type="email"
             value={resetEmail}
             onChange={e => setResetEmail(e.target.value)}
             placeholder="Enter your email"
-            className="w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring"
+            className="w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring text-base"
             required
           />
           {resetMsg && <div className="text-green-600 text-sm mb-2">{resetMsg}</div>}
           {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
-          <div className="flex gap-2">
+          <div className="flex flex-row gap-3 justify-between mt-2 w-full">
             <button type="button" onClick={() => setShowReset(false)} className="flex-1 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold">Back</button>
             <button type="submit" className="flex-1 py-2 rounded-xl bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold shadow hover:from-blue-600 hover:to-blue-800">Send Reset Link</button>
           </div>
