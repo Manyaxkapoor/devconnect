@@ -1,16 +1,18 @@
 import { useState } from 'react';
+import { supabase } from '../supabaseClient';
 
 const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
 
-const SignupForm = ({ onLoginClick }) => {
+const SignupForm = ({ onLoginClick, onSuccess }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     setError('');
     if (!name.trim()) {
       setError('Please enter your name.');
@@ -24,11 +26,13 @@ const SignupForm = ({ onLoginClick }) => {
       setError('Password must be at least 6 characters.');
       return;
     }
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      alert('Account created!');
-    }, 1200);
+    const { error } = await supabase.auth.signUp({ email, password });
+    setLoading(false);
+    if (error) {
+      setError(error.message);
+    } else {
+      if (onSuccess) onSuccess();
+    }
   };
 
   return (

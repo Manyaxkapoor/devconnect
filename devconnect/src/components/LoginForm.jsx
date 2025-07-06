@@ -1,15 +1,20 @@
 import { useState } from 'react';
+import { supabase } from '../supabaseClient';
 
 const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
 
-const LoginForm = ({ onSignupClick }) => {
+const LoginForm = ({ onSignupClick, onSuccess }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showReset, setShowReset] = useState(false);
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetMsg, setResetMsg] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     setError('');
     if (!validateEmail(email)) {
       setError('Please enter a valid email address.');
@@ -19,11 +24,22 @@ const LoginForm = ({ onSignupClick }) => {
       setError('Password must be at least 6 characters.');
       return;
     }
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      alert('Logged in!');
-    }, 1200);
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    setLoading(false);
+    if (error) {
+      setError(error.message);
+    } else {
+      if (onSuccess) onSuccess();
+    }
+  };
+
+  const handleReset = async (e) => {
+    e.preventDefault();
+    setResetMsg('');
+    setError('');
+    const { error } = await supabase.auth.resetPasswordForEmail(resetEmail);
+    if (error) setError(error.message);
+    else setResetMsg('Password reset email sent! Check your inbox.');
   };
 
   return (
@@ -35,50 +51,71 @@ const LoginForm = ({ onSignupClick }) => {
         </div>
       </div>
       <h2 className="text-2xl font-bold text-black mb-8 text-center">Sign in</h2>
-      <form onSubmit={handleSubmit} className="w-full space-y-5">
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+      {showReset ? (
+        <form onSubmit={handleReset} className="space-y-4">
           <input
-            id="email"
             type="email"
-            autoComplete="email"
-            className="w-full px-4 py-3 rounded-full border border-gray-200 bg-gray-50 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none text-black transition placeholder-gray-400 shadow-sm"
-            placeholder="you@email.com"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
+            value={resetEmail}
+            onChange={e => setResetEmail(e.target.value)}
+            placeholder="Enter your email"
+            className="w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring"
             required
-            aria-invalid={!!error}
-            aria-describedby="login-error"
           />
-        </div>
-        <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-          <input
-            id="password"
-            type="password"
-            autoComplete="current-password"
-            className="w-full px-4 py-3 rounded-full border border-gray-200 bg-gray-50 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none text-black transition placeholder-gray-400 shadow-sm"
-            placeholder="Your password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            required
-            minLength={6}
-            aria-invalid={!!error}
-            aria-describedby="login-error"
-          />
-        </div>
-        {error && <div id="login-error" className="text-red-600 text-sm font-medium">{error}</div>}
-        <button
-          type="submit"
-          className="w-full bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold py-3 rounded-full shadow-sm hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200 text-lg mt-2"
-          disabled={loading}
-        >
-          {loading ? 'Signing in...' : 'Sign In'}
-        </button>
-      </form>
+          {resetMsg && <div className="text-green-600 text-sm mb-2">{resetMsg}</div>}
+          {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
+          <div className="flex gap-2">
+            <button type="button" onClick={() => setShowReset(false)} className="flex-1 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold">Back</button>
+            <button type="submit" className="flex-1 py-2 rounded-xl bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold shadow hover:from-blue-600 hover:to-blue-800">Send Reset Link</button>
+          </div>
+        </form>
+      ) : (
+        <form onSubmit={handleSubmit} className="w-full space-y-5">
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <input
+              id="email"
+              type="email"
+              autoComplete="email"
+              className="w-full px-4 py-3 rounded-full border border-gray-200 bg-gray-50 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none text-black transition placeholder-gray-400 shadow-sm"
+              placeholder="you@email.com"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              required
+              aria-invalid={!!error}
+              aria-describedby="login-error"
+            />
+          </div>
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <input
+              id="password"
+              type="password"
+              autoComplete="current-password"
+              className="w-full px-4 py-3 rounded-full border border-gray-200 bg-gray-50 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none text-black transition placeholder-gray-400 shadow-sm"
+              placeholder="Your password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              required
+              minLength={6}
+              aria-invalid={!!error}
+              aria-describedby="login-error"
+            />
+          </div>
+          {error && <div id="login-error" className="text-red-600 text-sm font-medium">{error}</div>}
+          <button
+            type="submit"
+            className="w-full bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold py-3 rounded-full shadow-sm hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200 text-lg mt-2"
+            disabled={loading}
+          >
+            {loading ? 'Logging in...' : 'Login'}
+          </button>
+          <div className="text-center mt-4">
+            <button type="button" onClick={() => setShowReset(true)} className="text-blue-600 hover:underline text-sm">Forgot your password?</button>
+          </div>
+        </form>
+      )}
       <div className="w-full flex flex-col items-center mt-6 space-y-2">
         <div className="text-sm text-gray-500">Don&apos;t have an account? <button type="button" className="text-blue-600 font-medium hover:underline" onClick={onSignupClick}>Sign up</button></div>
-        <a href="#forgot" className="text-blue-500 text-sm hover:underline">Forgot your password?</a>
       </div>
     </div>
   );

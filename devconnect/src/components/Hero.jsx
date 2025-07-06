@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { ArrowUpRight, MessageCircle } from 'lucide-react';
 import heroImg from '../assets/hero-mockup.jpg';
 import AuthModal from './AuthModal';
+import { useNavigate } from 'react-router-dom';
 
 const floatKeyframes = `
 @keyframes floatY {
@@ -85,9 +86,9 @@ const Hero = () => {
                 <MessageCircle size={18} className="text-white" />
               </div>
               {/* Top right message - moved down to overlap image, floating */}
-              <div className="absolute top-16 right-17 bg-white shadow-md rounded-xl px-4 py-2 flex items-center gap-2 animate-fade-in z-20 border border-gray-200" style={{animation: 'floatY 4.2s 0.5s ease-in-out infinite'}}>
+              <div className="absolute top-14 right-13 bg-white shadow-md rounded-xl px-4 py-2 flex items-center gap-2 animate-fade-in z-20 border border-gray-200" style={{animation: 'floatY 4.2s 0.5s ease-in-out infinite'}}>
                 <MessageCircle size={18} className="text-accent-500" />
-                <span className="text-sm font-medium text-gray-700 whitespace-nowrap">Welcome aboard!</span>
+                <span className="text-sm font-medium text-gray-700 whitespace-nowrap">Crazzyy!</span>
               </div>
               {/* Left center message - touching the image, floating */}
               <div className="absolute top-1/2 -translate-y-1/2 -left-2 bg-secondary-100 shadow rounded-xl px-4 py-2 flex items-center gap-2 animate-slide-up z-20 border border-secondary-200" style={{animation: 'floatX 3.8s 0.7s ease-in-out infinite'}}>
@@ -103,4 +104,58 @@ const Hero = () => {
   );
 };
 
-export default Hero; 
+const AboutSection = () => {
+  const navigate = useNavigate();
+  return (
+    <section id="about" className="relative overflow-hidden bg-gradient-to-br from-black via-gray-900 to-gray-700 py-16">
+      {/* Animated background gradient */}
+      <div className="absolute inset-0 z-0 animate-gradient-move bg-gradient-to-tr from-black via-gray-800 to-gray-700 opacity-70" style={{filter: 'blur(40px)'}} />
+      <div className="relative z-10 max-w-5xl mx-auto px-4 flex flex-col md:flex-row items-center md:items-stretch gap-0 md:gap-0">
+        <div className="w-full md:w-[340px] flex-shrink-0 flex items-center justify-start">
+          <img
+            src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=600&q=80"
+            alt="Developers collaborating"
+            className="rounded-2xl shadow-2xl border-4 border-white transition-transform duration-300 hover:scale-105 cursor-pointer w-full h-[320px] object-cover md:object-cover md:h-full md:w-[320px]"
+            style={{ boxShadow: '0 8px 40px 0 rgba(80,80,180,0.18), 0 1.5px 8px 0 rgba(80,80,180,0.10)' }}
+            onClick={() => navigate('/')} // Go home on click
+          />
+        </div>
+        <div className="flex-1 flex flex-col justify-center pl-0 md:pl-12 py-8 md:py-0">
+          <h2
+            className="text-3xl font-bold mb-4 text-white cursor-pointer hover:text-blue-400 transition-colors duration-200"
+            onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}
+          >
+            About DevConnect
+          </h2>
+          <div className="h-1 w-16 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full mb-4" />
+          <p className="text-xl text-gray-200 mb-4 leading-relaxed max-w-2xl">
+            DevConnect is a modern platform for developers to showcase their work, share ideas, and connect with like-minded creators. Whether you're building your first project or launching your next big thing, DevConnect is your space to inspire and be inspired.
+          </p>
+          <p className="text-lg text-gray-400 max-w-2xl">
+            Join a vibrant community, discover new opportunities, and let your code speak for itself. We believe every developer has a story worth sharing—let's build the future together.
+          </p>
+        </div>
+      </div>
+      {/* Animated gradient keyframes */}
+      <style>{`
+        @keyframes gradient-move {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+        .animate-gradient-move {
+          background-size: 200% 200%;
+          animation: gradient-move 8s ease-in-out infinite;
+        }
+      `}</style>
+    </section>
+  );
+};
+
+export default function HeroWithAbout() {
+  return (
+    <>
+      <Hero />
+      <AboutSection />
+    </>
+  );
+} 
