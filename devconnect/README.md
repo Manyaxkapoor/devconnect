@@ -1,12 +1,50 @@
-# React + Vite
+# DevConnect
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern developer platform to showcase your work, connect with others, and build your professional presence.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 🚀 Beautiful landing page with animated hero made from my figma design 
+- 👤 Modern authentication (login, signup, password reset) with Supabase Auth
+- 📝 Developer profile with avatar upload, skills, GitHub repos, and recent posts
+- 🏷️ Project showcase with image upload, tech stack, live demo, and GitHub links
+- 📰 Twitter-like main feed with posts, likes, comments, and real-time updates
+- ⚡ Responsive, clean, and accessible UI (Tailwind CSS + Inter font)
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tech Stack
+
+- [React](https://react.dev/) + [Vite](https://vitejs.dev/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Supabase](https://supabase.com/) (Auth, Database, Storage)
+- [Lucide Icons](https://lucide.dev/)
+
+
+## Supabase Setup
+- Create a Supabase project and get your API keys.
+- Set up Auth providers (email, OAuth, etc.).
+- Create tables: `users`, `posts`, `projects` 
+- Create public storage buckets: `avatars`, `project-images`.
+
+
+## Folder Structure
+```
+devconnect/
+├── src/
+│   ├── components/      # UI components
+│   ├── context/         # React context (User, Toast)
+│   ├── hooks/           # Custom hooks (usePosts, etc.)
+│   ├── pages/           # Page components
+│   ├── assets/          # Images, mockups
+│   └── ...
+├── index.html
+├── package.json
+├── README.md
+└── ...
+```
+
+## Customization
+- Update branding, colors, and images in `/src/components` and `/src/assets`.
+- Edit profile, project, and feed logic in `/src/hooks` and `/src/pages`.
+
+
