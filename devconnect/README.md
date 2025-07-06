@@ -31,11 +31,8 @@ This is a frontend-only project built with React + TailwindCSS, featuring **auth
   - Auth
   - Postgres DB
   - Public Storage Buckets
-- **Design**: [Figma](https://figma.com) (Custom UI layout)
+- **Design**: [Figma](https://www.figma.com/design/gr5GtjtqHpAlbMZ7qcIpCJ/dev-connect-idea?node-id=0-1&t=itl3jssRbhpTx6uR-1) (Custom UI layout)
 
 ---
 
-## 🧱 Supabase Setup
 
-1. Create a new project at [supabase.com](https://supabase.com/)
-2. Add your API keys to a `.env` file:
