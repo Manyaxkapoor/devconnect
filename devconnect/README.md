@@ -1,50 +1,41 @@
 # DevConnect
 
-A modern developer platform to showcase your work, connect with others, and build your professional presence.
+A modern frontend developer portfolio platform to **showcase your projects**, **build your profile**, and make an impression in the dev world.
 
-## Features
+This is a frontend-only project built with React + TailwindCSS, featuring **authentication and storage powered by Supabase**. Designed fully in Figma, the UI is clean, responsive, and production-ready — ideal for a personal portfolio or developer showcase site.
 
-- 🚀 Beautiful landing page with animated hero made from my figma design 
-- 👤 Modern authentication (login, signup, password reset) with Supabase Auth
-- 📝 Developer profile with avatar upload, skills, GitHub repos, and recent posts
-- 🏷️ Project showcase with image upload, tech stack, live demo, and GitHub links
-- 📰 Twitter-like main feed with posts, likes, comments, and real-time updates
-- ⚡ Responsive, clean, and accessible UI (Tailwind CSS + Inter font)
+---
 
+## ✨ Features
 
-## Tech Stack
+- 🎨 **Responsive, modern landing page** based on my own Figma design
+- 👤 **Developer profile system** with avatar upload, bio, skills, and GitHub link
+- 🧑‍💻 **Project showcase section** – add project details, tech stack, GitHub/live links
+- 📦 **Supabase integration** for:
+  - Email/password authentication
+  - Public storage buckets for avatars & project screenshots
+  - Database schema for users and projects
+- 🌙 **Dark/light mode ready UI** (Tailwind + Inter font)
+- 🔐 Authentication flow (signup, login, logout) handled via Supabase
+- ✅ Fully responsive design, works on desktop and mobile
 
-- [React](https://react.dev/) + [Vite](https://vitejs.dev/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Supabase](https://supabase.com/) (Auth, Database, Storage)
-- [Lucide Icons](https://lucide.dev/)
+> ⚠️ Note: This is a **frontend-only prototype**. No real-time collaboration or social features between users have been implemented.
 
+---
 
-## Supabase Setup
-- Create a Supabase project and get your API keys.
-- Set up Auth providers (email, OAuth, etc.).
-- Create tables: `users`, `posts`, `projects` 
-- Create public storage buckets: `avatars`, `project-images`.
+## 🧰 Tech Stack
 
+- **Frontend**: [React](https://react.dev/) + [Vite](https://vitejs.dev/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) + [Lucide Icons](https://lucide.dev/)
+- **Backend Services**: [Supabase](https://supabase.com/)
+  - Auth
+  - Postgres DB
+  - Public Storage Buckets
+- **Design**: [Figma](https://figma.com) (Custom UI layout)
 
-## Folder Structure
-```
-devconnect/
-├── src/
-│   ├── components/      # UI components
-│   ├── context/         # React context (User, Toast)
-│   ├── hooks/           # Custom hooks (usePosts, etc.)
-│   ├── pages/           # Page components
-│   ├── assets/          # Images, mockups
-│   └── ...
-├── index.html
-├── package.json
-├── README.md
-└── ...
-```
+---
 
-## Customization
-- Update branding, colors, and images in `/src/components` and `/src/assets`.
-- Edit profile, project, and feed logic in `/src/hooks` and `/src/pages`.
+## 🧱 Supabase Setup
 
-
+1. Create a new project at [supabase.com](https://supabase.com/)
+2. Add your API keys to a `.env` file:
