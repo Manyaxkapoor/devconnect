@@ -14,6 +14,11 @@ const AuthModal = ({ open, onClose }) => {
     navigate('/');
   };
 
+  const handleLoginSuccess = () => {
+    onClose();
+    navigate('/profile');
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
       <div className="absolute inset-0" onClick={onClose} aria-label="Close modal" tabIndex={-1} />
@@ -27,7 +32,7 @@ const AuthModal = ({ open, onClose }) => {
         </button>
         <div className="px-8 pb-8 pt-8">
           {mode === 'login' ? (
-            <LoginForm onSignupClick={() => setMode('signup')} />
+            <LoginForm onSignupClick={() => setMode('signup')} onSuccess={handleLoginSuccess} />
           ) : (
             <SignupForm onLoginClick={() => setMode('login')} onSuccess={handleSignupSuccess} />
           )}
