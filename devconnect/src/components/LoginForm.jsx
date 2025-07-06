@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { supabase } from '../supabaseClient';
 import { useNavigate } from 'react-router-dom';
-import { useToast } from '../context/ToastContext';
 
 const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
 
@@ -14,9 +13,6 @@ const LoginForm = ({ onSignupClick, onSuccess }) => {
   const [resetEmail, setResetEmail] = useState('');
   const [resetMsg, setResetMsg] = useState('');
   const navigate = useNavigate();
-  const toast = useToast();
-  const [magicEmail, setMagicEmail] = useState('');
-  const [magicMsg, setMagicMsg] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,22 +43,6 @@ const LoginForm = ({ onSignupClick, onSuccess }) => {
     const { error } = await supabase.auth.resetPasswordForEmail(resetEmail);
     if (error) setError(error.message);
     else setResetMsg('Password reset email sent! Check your inbox.');
-  };
-
-  const handleMagicLink = async (e) => {
-    e.preventDefault();
-    setMagicMsg('');
-    if (!validateEmail(magicEmail)) {
-      setMagicMsg('Please enter a valid email address.');
-      return;
-    }
-    const { error } = await supabase.auth.signInWithOtp({ email: magicEmail });
-    if (error) {
-      setMagicMsg(error.message);
-    } else {
-      setMagicMsg('A sign-in link has been sent to your email. Please check your inbox.');
-      toast.showToast('A sign-in link has been sent to your email. Please check your inbox.', 'success');
-    }
   };
 
   return (
@@ -137,24 +117,6 @@ const LoginForm = ({ onSignupClick, onSuccess }) => {
           </div>
         </form>
       )}
-      {/* Magic Link Sign In */}
-      <form onSubmit={handleMagicLink} className="w-full space-y-4 mb-6">
-        <input
-          type="email"
-          value={magicEmail}
-          onChange={e => setMagicEmail(e.target.value)}
-          placeholder="Sign in with magic link (email only)"
-          className="w-full px-4 py-3 rounded-full border border-gray-200 bg-gray-50 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none text-black transition placeholder-gray-400 shadow-sm"
-          required
-        />
-        <button
-          type="submit"
-          className="w-full bg-gradient-to-r from-green-500 to-green-700 text-white font-semibold py-3 rounded-full shadow-sm hover:from-green-600 hover:to-green-800 focus:outline-none focus:ring-2 focus:ring-green-300 transition-all duration-200 text-lg"
-        >
-          Send Magic Link
-        </button>
-        {magicMsg && <div className={`text-sm font-medium ${magicMsg.startsWith('A sign-in link') ? 'text-green-600' : 'text-red-600'}`}>{magicMsg}</div>}
-      </form>
       <div className="w-full flex flex-col items-center mt-6 space-y-2">
         <div className="text-sm text-gray-500">Don&apos;t have an account? <button type="button" className="text-blue-600 font-medium hover:underline" onClick={onSignupClick}>Sign up</button></div>
       </div>
