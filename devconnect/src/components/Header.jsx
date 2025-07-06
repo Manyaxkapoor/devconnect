@@ -36,12 +36,12 @@ const Header = () => {
             >
               About
             </a>
-            <a 
-              href="#contact" 
+            <Link 
+              to="/projects" 
               className="text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200"
             >
-              Contact
-            </a>
+              Projects
+            </Link>
             <Link 
               to="/profile" 
               className="text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200"
@@ -87,13 +87,13 @@ const Header = () => {
               >
                 About
               </a>
-              <a 
-                href="#contact" 
+              <Link 
+                to="/projects" 
                 className="block px-3 py-2 text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Contact
-              </a>
+                Projects
+              </Link>
               <Link 
                 to="/profile" 
                 className="block px-3 py-2 text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200"
