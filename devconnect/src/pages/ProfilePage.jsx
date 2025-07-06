@@ -31,7 +31,7 @@ export default function ProfilePage() {
         skills: [],
       });
       setLoading(false);
-      setEditOpen(true); // Open edit modal on first load after login
+      // Do NOT open edit modal automatically
     };
     fetchProfile();
   }, [user]);

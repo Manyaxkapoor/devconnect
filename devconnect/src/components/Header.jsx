@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Menu, X } from 'lucide-react';
+import { useUser } from '../context/UserContext';
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showHeader, setShowHeader] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const { user } = useUser();
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -36,7 +38,7 @@ const Header = () => {
 
   return (
     <header className={`bg-white sticky top-0 z-50 transition-transform duration-300 ${showHeader ? 'translate-y-0' : '-translate-y-full'}`} style={{ willChange: 'transform' }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center h-16">
@@ -50,20 +52,21 @@ const Header = () => {
             </Link>
           </div>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          {/* Desktop Navigation - Centered */}
+          <nav className="hidden md:flex items-center space-x-8 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
             <Link 
               to="/" 
               className="text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200 rounded-lg px-3 py-1 hover:bg-gray-100"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
               Home
             </Link>
-            <a 
-              href="#about" 
+            <Link 
+              to="/#about" 
               className="text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200 rounded-lg px-3 py-1 hover:bg-gray-100"
             >
               About
-            </a>
+            </Link>
             <Link 
               to="/projects" 
               className="text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200 rounded-lg px-3 py-1 hover:bg-gray-100"
@@ -79,12 +82,14 @@ const Header = () => {
           </nav>
 
           {/* Desktop CTA Button */}
-          <div className="hidden md:flex items-center">
-            <button onClick={openAuthModal} className="bg-black hover:bg-gray-800 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200 flex items-center space-x-2">
-              <span>Get Started</span>
-              <ArrowRight size={16} />
-            </button>
-          </div>
+          {!user && (
+            <div className="hidden md:flex items-center">
+              <button onClick={openAuthModal} className="bg-black hover:bg-gray-800 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200 flex items-center space-x-2">
+                <span>Get Started</span>
+                <ArrowRight size={16} />
+              </button>
+            </div>
+          )}
 
           {/* Mobile Menu Button */}
           <div className="md:hidden">
@@ -103,38 +108,40 @@ const Header = () => {
             <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-t border-secondary-200">
               <Link 
                 to="/" 
-                className="block px-3 py-2 text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200"
-                onClick={() => setIsMobileMenuOpen(false)}
+                className="block px-3 py-2 text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200 rounded-lg hover:bg-gray-100"
+                onClick={() => { setIsMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
               >
                 Home
               </Link>
-              <a 
-                href="#about" 
-                className="block px-3 py-2 text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200"
+              <Link 
+                to="/#about" 
+                className="block px-3 py-2 text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200 rounded-lg hover:bg-gray-100"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 About
-              </a>
+              </Link>
               <Link 
                 to="/projects" 
-                className="block px-3 py-2 text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200"
+                className="block px-3 py-2 text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200 rounded-lg hover:bg-gray-100"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Projects
               </Link>
               <Link 
                 to="/profile" 
-                className="block px-3 py-2 text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200"
+                className="block px-3 py-2 text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200 rounded-lg hover:bg-gray-100"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Profile
               </Link>
-              <div className="pt-4">
-                <button onClick={openAuthModal} className="w-full bg-black hover:bg-gray-800 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2">
-                  <span>Get Started</span>
-                  <ArrowRight size={16} />
-                </button>
-              </div>
+              {!user && (
+                <div className="pt-4">
+                  <button onClick={openAuthModal} className="w-full bg-black hover:bg-gray-800 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2">
+                    <span>Get Started</span>
+                    <ArrowRight size={16} />
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         )}

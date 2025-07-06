@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ArrowUpRight, MessageCircle } from 'lucide-react';
 import heroImg from '../assets/hero-mockup.jpg';
-import AuthModal from './AuthModal';
 import { useNavigate } from 'react-router-dom';
 
 const floatKeyframes = `
@@ -16,13 +15,15 @@ const floatKeyframes = `
 `;
 
 const Hero = () => {
-  const [authOpen, setAuthOpen] = useState(false);
-
-  // Listen for open-auth-modal event
   useEffect(() => {
-    const handler = () => setAuthOpen(true);
-    window.addEventListener('open-auth-modal', handler);
-    return () => window.removeEventListener('open-auth-modal', handler);
+    if (window.location.hash === '#about') {
+      const aboutSection = document.getElementById('about');
+      if (aboutSection) {
+        setTimeout(() => {
+          aboutSection.scrollIntoView({ behavior: 'smooth' });
+        }, 100); // slight delay to ensure DOM is ready
+      }
+    }
   }, []);
 
   return (
@@ -53,7 +54,7 @@ const Hero = () => {
                 className="flex items-center gap-2 bg-black text-white font-semibold py-3 px-6 rounded-full shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-black/50 transition-all duration-200 text-lg"
                 tabIndex={0}
                 aria-label="Get Started"
-                onClick={() => setAuthOpen(true)}
+                onClick={() => window.dispatchEvent(new CustomEvent('open-auth-modal'))}
               >
                 Get Started <ArrowUpRight size={18} />
               </button>
@@ -107,7 +108,6 @@ const Hero = () => {
           </div>
         </div>
       </div>
-      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} />
       <style>{`
         @keyframes fade-in-up {
           0% { opacity: 0; transform: translateY(20px); }
@@ -157,7 +157,7 @@ const AboutSection = () => {
           <h2
             className="text-4xl font-extrabold text-black tracking-tight mb-6 transition-all duration-300 cursor-pointer hover:text-blue-700 hover:-translate-y-1"
             style={{ letterSpacing: '-0.03em', fontFamily: 'Inter, sans-serif' }}
-            onClick={scrollToTop}
+            // onClick={scrollToTop}
           >
             ABOUT DEVCONNECT
           </h2>
