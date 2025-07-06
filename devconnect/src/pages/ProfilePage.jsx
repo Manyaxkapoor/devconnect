@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useUser } from "../context/UserContext";
+import { useToast } from "../context/ToastContext";
 import ProfileHeader from "../components/ProfileHeader";
 import SkillsSection from "../components/SkillsSection";
 import GithubRepos from "../components/GithubRepos";
@@ -9,6 +10,7 @@ import { supabase } from "../supabaseClient";
 
 export default function ProfilePage() {
   const { user } = useUser();
+  const toast = useToast();
   const [profile, setProfile] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -44,6 +46,10 @@ export default function ProfilePage() {
       id: user.id,
       ...newProfile,
     });
+    toast.showToast("Profile updated!", "success");
+    // Optionally, refetch profile from Supabase for latest data
+    // const { data } = await supabase.from("users").select("*").eq("id", user.id).single();
+    // if (data) setProfile(data);
   };
 
   if (!user) {
