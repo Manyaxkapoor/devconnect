@@ -1,11 +1,18 @@
 import { useState } from 'react';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
+import { useNavigate } from 'react-router-dom';
 
 const AuthModal = ({ open, onClose }) => {
   const [mode, setMode] = useState('login');
+  const navigate = useNavigate();
 
   if (!open) return null;
+
+  const handleSignupSuccess = () => {
+    onClose();
+    navigate('/');
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
@@ -22,7 +29,7 @@ const AuthModal = ({ open, onClose }) => {
           {mode === 'login' ? (
             <LoginForm onSignupClick={() => setMode('signup')} />
           ) : (
-            <SignupForm onLoginClick={() => setMode('login')} />
+            <SignupForm onLoginClick={() => setMode('login')} onSuccess={handleSignupSuccess} />
           )}
         </div>
       </div>
