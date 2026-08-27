@@ -35,7 +35,7 @@ export default function PostCard({ post, currentUser }) {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow p-5 mb-6 flex flex-col gap-3 border border-gray-100">
+    <article className="mb-5 flex flex-col gap-4 rounded-[2rem] border border-gray-200 bg-white p-5 transition hover:border-gray-300 sm:p-6">
       <div className="flex items-center gap-3">
         <img
           src={post.avatar || "/avatar-placeholder.svg"}
@@ -103,7 +103,7 @@ export default function PostCard({ post, currentUser }) {
           )}
         </>
       )}
-      <div className="flex items-center gap-6 mt-2 text-gray-500">
+      <div className="mt-2 flex items-center gap-6 border-t border-gray-100 pt-4 text-gray-500">
         <button
           className={`flex items-center gap-1 hover:text-red-500 transition ${liked ? "text-red-500" : ""}`}
           onClick={handleLike}
@@ -120,6 +120,6 @@ export default function PostCard({ post, currentUser }) {
           <span className="text-sm">Share</span>
         </button>
       </div>
-    </div>
+    </article>
   );
 }

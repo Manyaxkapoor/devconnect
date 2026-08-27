@@ -15,10 +15,10 @@ export default function CreatePost({ onPost }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white rounded-2xl shadow p-5 mb-6 flex flex-col gap-3 border border-gray-100"
+      className="mb-8 flex flex-col gap-4 rounded-[2rem] border border-gray-200 bg-white p-5 shadow-soft sm:p-6"
     >
       <textarea
-        className="w-full border rounded-xl px-3 py-2 resize-none focus:outline-none focus:ring"
+        className="w-full resize-none border-0 px-1 py-2 text-lg text-gray-900 outline-none placeholder:text-gray-400 focus:ring-0"
         rows={3}
         placeholder="What's happening?"
         value={content}
@@ -26,7 +26,7 @@ export default function CreatePost({ onPost }) {
       />
       <input
         type="text"
-        className="w-full border rounded-xl px-3 py-2 focus:outline-none focus:ring"
+        className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm outline-none transition focus:border-gray-400 focus:ring-2 focus:ring-gray-100"
         placeholder="Image URL (optional)"
         value={image}
         onChange={(e) => setImage(e.target.value)}
@@ -34,11 +34,11 @@ export default function CreatePost({ onPost }) {
       <div className="flex justify-end">
         <button
           type="submit"
-          className="bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold px-6 py-2 rounded-xl shadow hover:from-blue-600 hover:to-blue-800 transition"
+          className="rounded-full bg-black px-6 py-2.5 font-semibold text-white transition hover:bg-gray-800"
         >
           Post
         </button>
       </div>
     </form>
   );
-} 
+}

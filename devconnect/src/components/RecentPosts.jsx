@@ -20,16 +20,16 @@ const posts = [
 
 export default function RecentPosts() {
   return (
-    <section className="bg-white rounded-3xl shadow-sm p-6 mt-8">
-      <h2 className="text-xl font-bold mb-4 text-gray-900">Recent Posts & Projects</h2>
-      <div className="space-y-4">
+    <section className="rounded-[2rem] border border-gray-200 bg-gray-50 p-6 sm:p-8">
+      <div className="mb-6 text-xs font-bold uppercase tracking-[0.2em] text-gray-400">Latest notes</div>
+      <div className="space-y-1">
         {posts.map((post) => (
           <div
             key={post.title}
-            className="p-4 rounded-xl border border-gray-100 hover:shadow-md transition"
+            className="rounded-2xl p-4 transition hover:bg-white hover:shadow-soft"
           >
             <div className="flex items-center justify-between">
-              <span className="text-lg font-semibold text-gray-800">
+              <span className="font-semibold text-gray-900">
                 {post.title}
               </span>
               <span className="text-xs text-gray-400 font-mono">
@@ -42,4 +42,4 @@ export default function RecentPosts() {
       </div>
     </section>
   );
-} 
+}

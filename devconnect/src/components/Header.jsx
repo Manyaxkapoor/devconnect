@@ -73,6 +73,9 @@ const Header = () => {
             >
               Projects
             </Link>
+            <Link to="/feed" className="text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200 rounded-lg px-3 py-1 hover:bg-gray-100">
+              Feed
+            </Link>
             <Link
               to="/profile"
               className="text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200 rounded-lg px-3 py-1 hover:bg-gray-100"
@@ -126,6 +129,9 @@ const Header = () => {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Projects
+              </Link>
+              <Link to="/feed" className="block px-3 py-2 text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200 rounded-lg hover:bg-gray-100" onClick={() => setIsMobileMenuOpen(false)}>
+                Feed
               </Link>
               <Link
                 to="/profile"

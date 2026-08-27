@@ -7,6 +7,7 @@ import GithubRepos from "../components/GithubRepos";
 import RecentPosts from "../components/RecentPosts";
 import EditProfileModal from "../components/EditProfileModal";
 import { supabase } from "../supabaseClient";
+import { ArrowUpRight, Pencil } from "lucide-react";
 
 export default function ProfilePage() {
   const { user } = useUser();
@@ -53,27 +54,44 @@ export default function ProfilePage() {
   };
 
   if (!user) {
-    return <div className="text-center py-20 text-gray-500">Please log in to view your profile.</div>;
+    return (
+      <main className="flex min-h-[70vh] items-center justify-center bg-white px-4">
+        <div className="max-w-xl text-center">
+          <div className="mx-auto mb-6 h-2 w-2 rounded-full bg-blue-600" />
+          <h1 className="font-display text-4xl font-bold tracking-[-0.04em] text-black sm:text-5xl">Your work deserves a home.</h1>
+          <p className="mx-auto mt-5 max-w-md leading-7 text-gray-500">Log in to shape your developer profile, collect your work, and tell the story behind what you build.</p>
+          <button onClick={() => window.dispatchEvent(new CustomEvent("open-auth-modal"))} className="mt-8 inline-flex items-center gap-2 rounded-full bg-black px-6 py-3 font-semibold text-white transition hover:-translate-y-0.5 hover:bg-gray-800">
+            Get started <ArrowUpRight size={18} />
+          </button>
+        </div>
+      </main>
+    );
   }
   if (loading || !profile) {
     return <div className="text-center py-20 text-gray-400">Loading profile...</div>;
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10 px-2 flex flex-col items-center">
-      <div className="w-full max-w-2xl">
-        <div className="relative">
-          <ProfileHeader avatarUrl={profile.avatar || "/avatar-placeholder.svg"} name={profile.name} bio={profile.bio} />
-          <button
-            className="absolute top-0 right-0 mt-4 mr-4 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold shadow hover:from-blue-600 hover:to-blue-800"
-            onClick={() => setEditOpen(true)}
-          >
-            Edit Profile
+    <main className="min-h-screen bg-white">
+      <div className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+        <div className="mb-8 flex items-center justify-between border-b border-gray-100 pb-6">
+          <div className="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.24em] text-gray-500">
+            <span className="h-2 w-2 rounded-full bg-blue-600" /> Developer profile
+          </div>
+          <button className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-700 transition hover:border-gray-300 hover:bg-gray-50" onClick={() => setEditOpen(true)}>
+            <Pencil size={15} /> Edit profile
           </button>
         </div>
-        <SkillsSection skills={profile.skills} />
-        <GithubRepos />
-        <RecentPosts />
+        <div className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
+          <aside className="rounded-[2rem] bg-black p-7 text-white sm:p-9">
+            <ProfileHeader avatarUrl={profile.avatar || "/avatar-placeholder.svg"} name={profile.name} bio={profile.bio} />
+            <SkillsSection skills={profile.skills} />
+          </aside>
+          <div className="space-y-6">
+            <GithubRepos />
+            <RecentPosts />
+          </div>
+        </div>
       </div>
       <EditProfileModal
         isOpen={editOpen}
@@ -81,6 +99,6 @@ export default function ProfilePage() {
         profile={profile}
         onSave={handleSave}
       />
-    </div>
+    </main>
   );
 }

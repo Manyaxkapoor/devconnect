@@ -1,4 +1,5 @@
 import React from "react";
+import { ArrowUpRight, Github } from "lucide-react";
 
 const repos = [
   {
@@ -20,27 +21,33 @@ const repos = [
 
 export default function GithubRepos() {
   return (
-    <section className="bg-white rounded-3xl shadow-sm p-6 mt-8">
-      <h2 className="text-xl font-bold mb-4 text-gray-900">GitHub Repositories</h2>
-      <div className="space-y-4">
+    <section className="rounded-[2rem] border border-gray-200 bg-white p-6 sm:p-8">
+      <div className="mb-6 flex items-center justify-between">
+        <div>
+          <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.2em] text-gray-400"><Github size={14} /> Open source</div>
+          <h2 className="font-display text-2xl font-bold tracking-tight text-gray-950">GitHub repositories</h2>
+        </div>
+        <span className="rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-500">{repos.length}</span>
+      </div>
+      <div className="divide-y divide-gray-100">
         {repos.map((repo) => (
           <a
             key={repo.name}
             href={repo.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="block p-4 rounded-xl border border-gray-100 hover:shadow-md transition group"
+            className="group block py-5 first:pt-0 last:pb-0"
           >
             <div className="flex items-center justify-between">
-              <span className="text-lg font-semibold text-blue-700 group-hover:underline">
+              <span className="text-base font-semibold text-gray-900 transition group-hover:text-blue-700">
                 {repo.name}
               </span>
-              <svg className="w-5 h-5 text-gray-400 group-hover:text-blue-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+              <ArrowUpRight size={17} className="text-gray-400 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-black" />
             </div>
-            <p className="text-gray-600 mt-1 text-sm">{repo.description}</p>
+            <p className="mt-1 text-sm leading-6 text-gray-500">{repo.description}</p>
           </a>
         ))}
       </div>
     </section>
   );
-} 
+}

@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
-import { ArrowUpRight, MessageCircle } from 'lucide-react';
+import { createElement, useEffect } from 'react';
+import { ArrowRight, ArrowUpRight, Code2, Compass, MessageCircle, Users } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import heroImg from '../assets/hero-mockup.jpg';
 
 const floatKeyframes = `
@@ -57,7 +58,7 @@ const Hero = () => {
               >
                 Get Started <ArrowUpRight size={18} />
               </button>
-              <button className="flex items-center gap-2 bg-white text-black font-semibold py-3 px-6 rounded-full shadow-sm border border-gray-200 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black/30 transition-all duration-200" tabIndex={0} aria-label="Learn More">
+              <button onClick={() => document.getElementById('discover')?.scrollIntoView({ behavior: 'smooth' })} className="flex items-center gap-2 bg-white text-black font-semibold py-3 px-6 rounded-full shadow-sm border border-gray-200 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-black/30 transition-all duration-200" tabIndex={0} aria-label="Learn More">
                 Learn More
               </button>
             </div>
@@ -134,42 +135,126 @@ const Hero = () => {
   );
 };
 
+const discoveryCards = [
+  {
+    number: '01',
+    icon: Code2,
+    title: 'Show the work',
+    description: 'Turn side projects, experiments, and shipped products into a portfolio that feels unmistakably yours.',
+    link: '/projects',
+    action: 'Explore projects',
+  },
+  {
+    number: '02',
+    icon: Compass,
+    title: 'Share the process',
+    description: 'Post the useful lesson, the stubborn bug, or the tiny breakthrough that moved your build forward.',
+    link: '/feed',
+    action: 'Visit the feed',
+  },
+  {
+    number: '03',
+    icon: Users,
+    title: 'Find your people',
+    description: 'Let your ideas start conversations with developers who care about the same tools and problems.',
+    link: '/profile',
+    action: 'Build your profile',
+  },
+];
+
+const DiscoverySection = () => (
+  <section id="discover" className="bg-gray-950 py-20 text-white sm:py-24">
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mb-14 flex flex-col gap-8 border-b border-white/10 pb-10 md:flex-row md:items-end md:justify-between">
+        <div className="max-w-3xl">
+          <div className="mb-5 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.24em] text-gray-500">
+            <span className="h-2 w-2 rounded-full bg-blue-500" /> Built for builders
+          </div>
+          <h2 className="font-display text-4xl font-bold tracking-[-0.04em] sm:text-5xl lg:text-6xl">
+            More than a portfolio.<br />A place to <span className="font-normal italic text-gray-500">keep moving.</span>
+          </h2>
+        </div>
+        <p className="max-w-sm text-base leading-7 text-gray-400">
+          DevConnect gives the work behind your work somewhere to live—and someone new a reason to discover it.
+        </p>
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-3">
+        {discoveryCards.map((card) => (
+          <Link key={card.title} to={card.link} className="group flex min-h-[310px] flex-col rounded-[2rem] border border-white/10 bg-white/[0.04] p-7 transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:bg-white/[0.08] sm:p-8">
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-xs text-gray-600">{card.number}</span>
+              <span className="flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-white/5 text-gray-300 transition group-hover:bg-white group-hover:text-black">
+                {createElement(card.icon, { size: 19 })}
+              </span>
+            </div>
+            <div className="mt-auto pt-12">
+              <h3 className="font-display text-2xl font-bold tracking-tight">{card.title}</h3>
+              <p className="mt-3 text-sm leading-6 text-gray-400">{card.description}</p>
+              <div className="mt-6 flex items-center gap-2 text-sm font-semibold text-white">
+                {card.action} <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      <div className="mt-14 grid grid-cols-2 gap-6 border-t border-white/10 pt-10 sm:grid-cols-4">
+        {[
+          ['Build', 'in public'],
+          ['Share', 'what you learn'],
+          ['Connect', 'through craft'],
+          ['Grow', 'one project at a time'],
+        ].map(([verb, detail]) => (
+          <div key={verb}>
+            <div className="font-display text-xl font-bold">{verb}</div>
+            <div className="mt-1 text-sm text-gray-500">{detail}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
 const AboutSection = () => {
   // Scroll to top handler
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
   // Open login modal handler (reuse from Hero)
   const openAuth = () => document.getElementById('get-started-btn')?.click();
   return (
-    <section id="about" className="bg-white py-20">
-      <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center md:items-stretch gap-0 md:gap-12">
-        <div className="w-full md:w-[420px] flex-shrink-0 flex items-center justify-center md:justify-start mb-8 md:mb-0">
+    <section id="about" className="bg-white py-20 sm:py-28">
+      <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20 lg:px-8">
+        <div className="group relative overflow-hidden rounded-[2rem] bg-gray-100 min-h-[440px]">
           <img
             src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80"
             alt="Developers collaborating"
-            className="rounded-2xl shadow-lg border border-gray-200 w-full h-[400px] object-cover md:w-[380px] md:h-[400px] transition-transform duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer"
-            style={{ maxWidth: 420, background: '#f8f8f8', fontFamily: 'Inter, sans-serif' }}
+            className="absolute inset-0 h-full w-full object-cover grayscale transition duration-700 group-hover:scale-105 group-hover:grayscale-0"
             onClick={scrollToTop}
           />
+          <div className="absolute bottom-5 left-5 rounded-full bg-white/90 px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-gray-700 backdrop-blur">Made to be shared</div>
         </div>
-        <div className="flex-1 flex flex-col justify-center pl-0 md:pl-16">
-          <h2
-            className="text-4xl font-extrabold text-black tracking-tight mb-6 transition-all duration-300 cursor-pointer hover:text-blue-700 hover:-translate-y-1"
-            style={{ letterSpacing: '-0.03em', fontFamily: 'Inter, sans-serif' }}
-            // onClick={scrollToTop}
-          >
-            ABOUT DEVCONNECT
-          </h2>
-          <p className="text-lg text-gray-700 mb-4 leading-relaxed max-w-2xl font-normal">
-            DevConnect is a modern platform for developers to showcase their work, share ideas, and connect with like-minded creators. Whether you're building your first project or launching your next big thing, DevConnect is your space to inspire and be inspired.
+        <div className="flex flex-col justify-center">
+          <div className="mb-5 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.24em] text-gray-500"><span className="h-2 w-2 rounded-full bg-blue-600" /> About DevConnect</div>
+          <h2 className="font-display text-4xl font-bold tracking-[-0.04em] text-black sm:text-5xl">Good work gets better when it is <span className="font-normal italic text-gray-500">seen.</span></h2>
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-gray-600">
+            DevConnect is a home for the full developer story—not only the polished launch, but the questions, decisions, and people that shaped it.
           </p>
-          <p className="text-base text-gray-500 max-w-2xl font-normal mb-8">
-            Join a vibrant community, discover new opportunities, and let your code speak for itself. We believe every developer has a story worth sharing—let's build the future together.
-          </p>
+          <div className="my-8 divide-y divide-gray-200 border-y border-gray-200">
+            {[
+              ['01', 'Create a profile with personality, not another résumé.'],
+              ['02', 'Collect your projects in one focused, visual space.'],
+              ['03', 'Share progress and meet people through the work itself.'],
+            ].map(([number, text]) => (
+              <div key={number} className="flex gap-5 py-4 text-sm leading-6 text-gray-600 transition hover:pl-2 hover:text-black">
+                <span className="font-mono text-xs text-gray-400">{number}</span><span>{text}</span>
+              </div>
+            ))}
+          </div>
           <button
-            className="inline-block bg-black text-white font-semibold py-3 px-8 rounded-full shadow hover:bg-gray-900 transition-all duration-200 text-lg"
+            className="inline-flex w-fit items-center gap-2 rounded-full bg-black px-6 py-3 font-semibold text-white transition hover:-translate-y-0.5 hover:bg-gray-800"
             onClick={openAuth}
           >
-            Get Started
+            Join DevConnect <ArrowUpRight size={18} />
           </button>
 
         </div>
@@ -182,6 +267,7 @@ export default function HeroWithAbout() {
   return (
     <>
       <Hero />
+      <DiscoverySection />
       <AboutSection />
     </>
   );

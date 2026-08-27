@@ -60,11 +60,23 @@ export default function Feed() {
   const hasMore = posts.length > paginatedPosts.length;
 
   return (
-    <div className="w-full max-w-xl mx-auto py-8 px-2">
+    <main className="min-h-screen bg-white">
+      <section className="border-b border-gray-100">
+        <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6 sm:py-20">
+          <div className="mb-5 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.24em] text-gray-500">
+            <span className="h-2 w-2 rounded-full bg-blue-600" /> Community feed
+          </div>
+          <h1 className="font-display text-4xl font-bold tracking-[-0.04em] text-black sm:text-5xl">
+            Ideas in <span className="font-normal italic text-gray-500">motion.</span>
+          </h1>
+          <p className="mt-4 max-w-xl text-base leading-7 text-gray-500">Small updates, useful discoveries, and honest notes from developers building every day.</p>
+        </div>
+      </section>
+      <div className="mx-auto w-full max-w-2xl px-4 py-10 sm:px-6">
       {user ? (
         <CreatePost onPost={handlePost} user={user} />
       ) : (
-        <div className="text-center text-gray-500 mb-6">Please log in to create a post.</div>
+        <div className="mb-8 rounded-3xl border border-dashed border-gray-300 px-6 py-8 text-center text-gray-500">Log in to join the conversation.</div>
       )}
       {loading ? (
         <div className="text-center py-10 text-gray-400">Loading posts...</div>
@@ -81,7 +93,7 @@ export default function Feed() {
             <div className="flex justify-center mt-6">
               <button
                 onClick={() => setPage(page + 1)}
-                className="px-6 py-2 rounded-xl bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold shadow hover:from-blue-600 hover:to-blue-800"
+                className="rounded-full bg-black px-6 py-3 font-semibold text-white transition hover:-translate-y-0.5 hover:bg-gray-800"
               >
                 Load More
               </button>
@@ -89,6 +101,7 @@ export default function Feed() {
           )}
         </>
       )}
-    </div>
+      </div>
+    </main>
   );
 }
