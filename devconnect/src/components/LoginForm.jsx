@@ -20,10 +20,12 @@ const LoginForm = ({ onSignupClick, onSuccess }) => {
     setError('');
     if (!validateEmail(email)) {
       setError('Please enter a valid email address.');
+      setLoading(false);
       return;
     }
     if (password.length < 6) {
       setError('Password must be at least 6 characters.');
+      setLoading(false);
       return;
     }
     const { error } = await supabase.auth.signInWithPassword({ email, password });
@@ -124,4 +126,4 @@ const LoginForm = ({ onSignupClick, onSuccess }) => {
   );
 };
 
-export default LoginForm; 
+export default LoginForm;

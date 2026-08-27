@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Menu, X } from 'lucide-react';
 import { useUser } from '../context/UserContext';
@@ -6,7 +6,7 @@ import { useUser } from '../context/UserContext';
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showHeader, setShowHeader] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const lastScrollY = useRef(0);
   const { user } = useUser();
 
   const toggleMobileMenu = () => {
@@ -19,16 +19,16 @@ const Header = () => {
       const currentScrollY = window.scrollY;
       if (currentScrollY < 10) {
         setShowHeader(true);
-      } else if (currentScrollY > lastScrollY) {
+      } else if (currentScrollY > lastScrollY.current) {
         setShowHeader(false); // Hide on scroll down
       } else {
         setShowHeader(true); // Show on scroll up
       }
-      setLastScrollY(currentScrollY);
+      lastScrollY.current = currentScrollY;
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
+  }, []);
 
   // Dispatch a custom event to open the auth modal
   const openAuthModal = () => {
@@ -54,27 +54,27 @@ const Header = () => {
 
           {/* Desktop Navigation - Centered */}
           <nav className="hidden md:flex items-center space-x-8 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            <Link 
-              to="/" 
+            <Link
+              to="/"
               className="text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200 rounded-lg px-3 py-1 hover:bg-gray-100"
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
               Home
             </Link>
-            <Link 
-              to="/#about" 
+            <Link
+              to="/#about"
               className="text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200 rounded-lg px-3 py-1 hover:bg-gray-100"
             >
               About
             </Link>
-            <Link 
-              to="/projects" 
+            <Link
+              to="/projects"
               className="text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200 rounded-lg px-3 py-1 hover:bg-gray-100"
             >
               Projects
             </Link>
-            <Link 
-              to="/profile" 
+            <Link
+              to="/profile"
               className="text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200 rounded-lg px-3 py-1 hover:bg-gray-100"
             >
               Profile
@@ -106,29 +106,29 @@ const Header = () => {
         {isMobileMenuOpen && (
           <div className="md:hidden animate-slide-down">
             <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-t border-secondary-200">
-              <Link 
-                to="/" 
+              <Link
+                to="/"
                 className="block px-3 py-2 text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200 rounded-lg hover:bg-gray-100"
                 onClick={() => { setIsMobileMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
               >
                 Home
               </Link>
-              <Link 
-                to="/#about" 
+              <Link
+                to="/#about"
                 className="block px-3 py-2 text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200 rounded-lg hover:bg-gray-100"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 About
               </Link>
-              <Link 
-                to="/projects" 
+              <Link
+                to="/projects"
                 className="block px-3 py-2 text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200 rounded-lg hover:bg-gray-100"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Projects
               </Link>
-              <Link 
-                to="/profile" 
+              <Link
+                to="/profile"
                 className="block px-3 py-2 text-secondary-600 hover:text-primary-600 font-medium transition-colors duration-200 rounded-lg hover:bg-gray-100"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
@@ -150,4 +150,4 @@ const Header = () => {
   );
 };
 
-export default Header; 
+export default Header;

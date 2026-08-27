@@ -20,14 +20,14 @@ export default function ProfilePage() {
     if (!user) return;
     const fetchProfile = async () => {
       setLoading(true);
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from("users")
         .select("*")
         .eq("id", user.id)
         .single();
       if (data) setProfile(data);
       else setProfile({
-        avatar: user.user_metadata?.avatar_url || "/avatar-placeholder.png",
+        avatar: user.user_metadata?.avatar_url || "/avatar-placeholder.svg",
         name: user.user_metadata?.name || user.email,
         bio: "",
         skills: [],
@@ -63,7 +63,7 @@ export default function ProfilePage() {
     <div className="min-h-screen bg-gray-50 py-10 px-2 flex flex-col items-center">
       <div className="w-full max-w-2xl">
         <div className="relative">
-          <ProfileHeader avatarUrl={profile.avatar || "/avatar-placeholder.png"} name={profile.name} bio={profile.bio} />
+          <ProfileHeader avatarUrl={profile.avatar || "/avatar-placeholder.svg"} name={profile.name} bio={profile.bio} />
           <button
             className="absolute top-0 right-0 mt-4 mr-4 px-4 py-2 rounded-xl bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold shadow hover:from-blue-600 hover:to-blue-800"
             onClick={() => setEditOpen(true)}
@@ -83,4 +83,4 @@ export default function ProfilePage() {
       />
     </div>
   );
-} 
+}

@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { ArrowUpRight, MessageCircle } from 'lucide-react';
 import heroImg from '../assets/hero-mockup.jpg';
-import { useNavigate } from 'react-router-dom';
 
 const floatKeyframes = `
 @keyframes floatY {
@@ -136,7 +135,6 @@ const Hero = () => {
 };
 
 const AboutSection = () => {
-  const navigate = useNavigate();
   // Scroll to top handler
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
   // Open login modal handler (reuse from Hero)
@@ -173,7 +171,7 @@ const AboutSection = () => {
           >
             Get Started
           </button>
-        
+
         </div>
       </div>
     </section>
@@ -187,4 +185,4 @@ export default function HeroWithAbout() {
       <AboutSection />
     </>
   );
-} 
+}

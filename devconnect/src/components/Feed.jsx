@@ -26,13 +26,13 @@ export default function Feed() {
 
   useEffect(() => {
     fetchPosts();
-    const session = supabase.auth.getSession().then(({ data }) => setUser(data.session?.user || null));
+    supabase.auth.getSession().then(({ data }) => setUser(data.session?.user || null));
     const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user || null);
     });
     // Real-time subscription
     const channel = supabase.channel('public:posts')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'posts' }, (payload) => {
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'posts' }, () => {
         fetchPosts();
       })
       .subscribe();
@@ -50,7 +50,7 @@ export default function Feed() {
         image: newPost.image,
         user_id: user.id,
         name: user.user_metadata?.name || user.email,
-        avatar: user.user_metadata?.avatar_url || "/avatar-placeholder.png",
+        avatar: user.user_metadata?.avatar_url || "/avatar-placeholder.svg",
       },
     ]);
     if (!error) fetchPosts();
@@ -91,4 +91,4 @@ export default function Feed() {
       )}
     </div>
   );
-} 
+}

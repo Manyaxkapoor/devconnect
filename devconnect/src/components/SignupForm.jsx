@@ -23,13 +23,19 @@ const SignupForm = ({ onLoginClick, onSuccess }) => {
     }
     if (!validateEmail(email)) {
       setError('Please enter a valid email address.');
+      setLoading(false);
       return;
     }
     if (password.length < 6) {
       setError('Password must be at least 6 characters.');
+      setLoading(false);
       return;
     }
-    const { error } = await supabase.auth.signUp({ email, password });
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { name: name.trim() } },
+    });
     setLoading(false);
     if (error) {
       setError(error.message);
@@ -111,4 +117,4 @@ const SignupForm = ({ onLoginClick, onSuccess }) => {
   );
 };
 
-export default SignupForm; 
+export default SignupForm;

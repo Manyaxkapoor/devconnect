@@ -40,7 +40,7 @@ export function usePosts() {
       image,
       user_id: user.id,
       name: user.user_metadata?.name || user.email,
-      avatar: user.user_metadata?.avatar_url || '/avatar-placeholder.png',
+      avatar: user.user_metadata?.avatar_url || '/avatar-placeholder.svg',
       created_at: new Date().toISOString(),
     };
     setPosts([optimistic, ...posts]);
@@ -50,7 +50,7 @@ export function usePosts() {
         image,
         user_id: user.id,
         name: user.user_metadata?.name || user.email,
-        avatar: user.user_metadata?.avatar_url || '/avatar-placeholder.png',
+        avatar: user.user_metadata?.avatar_url || '/avatar-placeholder.svg',
       },
     ]);
     if (error) setError(error.message);
@@ -72,4 +72,4 @@ export function usePosts() {
   };
 
   return { posts, loading, error, fetchPosts, createPost, updatePost, deletePost };
-} 
+}

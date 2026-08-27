@@ -28,7 +28,7 @@ export default function EditProfileModal({ isOpen, onClose, profile, onSave }) {
     setAvatarUploading(true);
     const fileExt = file.name.split('.').pop();
     const fileName = `${Date.now()}.${fileExt}`;
-    const { data, error } = await supabase.storage.from('avatars').upload(fileName, file);
+    const { error } = await supabase.storage.from('avatars').upload(fileName, file);
     if (error) {
       alert('Avatar upload failed: ' + error.message);
       setAvatarUploading(false);
@@ -66,7 +66,7 @@ export default function EditProfileModal({ isOpen, onClose, profile, onSave }) {
           <div className="flex flex-col items-center">
             <div className="relative mb-2">
               <img
-                src={avatarPreview || "/avatar-placeholder.png"}
+                src={avatarPreview || "/avatar-placeholder.svg"}
                 alt="Avatar"
                 className="w-20 h-20 rounded-full object-cover border"
               />
@@ -134,4 +134,4 @@ export default function EditProfileModal({ isOpen, onClose, profile, onSave }) {
       </div>
     </div>
   );
-} 
+}

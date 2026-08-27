@@ -38,7 +38,7 @@ export default function PostCard({ post, currentUser }) {
     <div className="bg-white rounded-2xl shadow p-5 mb-6 flex flex-col gap-3 border border-gray-100">
       <div className="flex items-center gap-3">
         <img
-          src={post.avatar || "/avatar-placeholder.png"}
+          src={post.avatar || "/avatar-placeholder.svg"}
           alt={post.name || "User"}
           className="w-10 h-10 rounded-full object-cover border"
         />
@@ -122,4 +122,4 @@ export default function PostCard({ post, currentUser }) {
       </div>
     </div>
   );
-} 
+}

@@ -32,7 +32,7 @@ export default function ProjectUploadForm({ onSubmit, initial = initialState, on
     setUploading(true);
     const fileExt = file.name.split('.').pop();
     const fileName = `${Date.now()}.${fileExt}`;
-    const { data, error } = await supabase.storage.from('project-images').upload(fileName, file);
+    const { error } = await supabase.storage.from('project-images').upload(fileName, file);
     if (error) {
       alert('Image upload failed: ' + error.message);
       setUploading(false);
@@ -140,4 +140,4 @@ export default function ProjectUploadForm({ onSubmit, initial = initialState, on
       </div>
     </form>
   );
-} 
+}
