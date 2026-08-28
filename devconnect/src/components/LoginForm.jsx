@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { ArrowRight, KeyRound, Mail } from 'lucide-react';
 import { supabase } from '../supabaseClient';
-import { useNavigate } from 'react-router-dom';
+import { getAuthErrorMessage } from '../utils/authError';
 
 const validateEmail = (email) => /\S+@\S+\.\S+/.test(email);
+const inputClass = 'w-full rounded-2xl border border-gray-200 bg-gray-50 py-3.5 pl-11 pr-4 text-gray-950 outline-none transition placeholder:text-gray-400 focus:border-gray-400 focus:bg-white focus:ring-4 focus:ring-gray-100';
 
 const LoginForm = ({ onSignupClick, onSuccess }) => {
   const [email, setEmail] = useState('');
@@ -12,116 +14,64 @@ const LoginForm = ({ onSignupClick, onSuccess }) => {
   const [showReset, setShowReset] = useState(false);
   const [resetEmail, setResetEmail] = useState('');
   const [resetMsg, setResetMsg] = useState('');
-  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     setError('');
-    if (!validateEmail(email)) {
-      setError('Please enter a valid email address.');
+    if (!validateEmail(email)) return setError('Please enter a valid email address.');
+    if (password.length < 6) return setError('Password must be at least 6 characters.');
+    setLoading(true);
+    try {
+      const { error: authError } = await supabase.auth.signInWithPassword({ email, password });
+      if (authError) setError(getAuthErrorMessage(authError));
+      else onSuccess?.();
+    } catch (authError) {
+      setError(getAuthErrorMessage(authError));
+    } finally {
       setLoading(false);
-      return;
-    }
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters.');
-      setLoading(false);
-      return;
-    }
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    setLoading(false);
-    if (error) {
-      setError(error.message);
-    } else {
-      if (onSuccess) onSuccess();
-      navigate('/profile');
     }
   };
 
-  const handleReset = async (e) => {
-    e.preventDefault();
+  const handleReset = async (event) => {
+    event.preventDefault();
     setResetMsg('');
     setError('');
-    const { error } = await supabase.auth.resetPasswordForEmail(resetEmail);
-    if (error) setError(error.message);
-    else setResetMsg('Password reset email sent! Check your inbox.');
+    setLoading(true);
+    try {
+      const { error: authError } = await supabase.auth.resetPasswordForEmail(resetEmail, { redirectTo: `${window.location.origin}/` });
+      if (authError) setError(getAuthErrorMessage(authError));
+      else setResetMsg('Reset link sent. Check your inbox.');
+    } catch (authError) {
+      setError(getAuthErrorMessage(authError));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="max-w-md w-full min-h-[520px] mx-auto bg-white rounded-3xl shadow-2xl p-8 font-sans flex flex-col items-center justify-center">
-      {/* Logo */}
-      <div className="mb-6">
-        <div className="w-auto px-6 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center">
-          <span className="text-white text-2xl font-bold tracking-wide font-display">DevConnect</span>
-        </div>
+    <div className="mx-auto flex w-full max-w-md flex-col justify-center font-sans">
+      <div className="mb-8">
+        <div className="mb-3 text-xs font-bold uppercase tracking-[0.22em] text-gray-400">{showReset ? 'Account recovery' : 'Welcome back'}</div>
+        <h1 className="font-display text-3xl font-bold tracking-[-0.04em] text-black sm:text-4xl">{showReset ? 'Reset your password.' : 'Pick up where you left off.'}</h1>
+        <p className="mt-3 text-sm leading-6 text-gray-500">{showReset ? 'We will send a secure reset link to your email.' : 'Log in to manage your profile, projects, and conversations.'}</p>
       </div>
-      <h2 className="text-2xl font-bold text-black mb-8 text-center">Sign in</h2>
       {showReset ? (
-        <form onSubmit={handleReset} className="space-y-4 w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto">
-          <input
-            type="email"
-            value={resetEmail}
-            onChange={e => setResetEmail(e.target.value)}
-            placeholder="Enter your email"
-            className="w-full px-3 py-2 border rounded-xl focus:outline-none focus:ring text-base"
-            required
-          />
-          {resetMsg && <div className="text-green-600 text-sm mb-2">{resetMsg}</div>}
-          {error && <div className="text-red-500 text-sm mb-2">{error}</div>}
-          <div className="flex flex-row gap-3 justify-between mt-2 w-full">
-            <button type="button" onClick={() => setShowReset(false)} className="flex-1 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold">Back</button>
-            <button type="submit" className="flex-1 py-2 rounded-xl bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold shadow hover:from-blue-600 hover:to-blue-800">Send Reset Link</button>
-          </div>
+        <form onSubmit={handleReset} className="space-y-5">
+          <label className="block text-sm font-semibold text-gray-700" htmlFor="reset-email">Email address</label>
+          <div className="relative"><Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} /><input id="reset-email" type="email" autoComplete="email" value={resetEmail} onChange={(event) => setResetEmail(event.target.value)} placeholder="you@email.com" className={inputClass} required /></div>
+          {resetMsg && <div className="rounded-2xl bg-green-50 px-4 py-3 text-sm text-green-700" role="status">{resetMsg}</div>}
+          {error && <div className="rounded-2xl bg-red-50 px-4 py-3 text-sm leading-5 text-red-700" role="alert">{error}</div>}
+          <div className="flex gap-3 pt-2"><button type="button" onClick={() => setShowReset(false)} className="flex-1 rounded-full border border-gray-200 py-3 font-semibold text-gray-700 hover:bg-gray-50">Back</button><button type="submit" disabled={loading} className="flex-1 rounded-full bg-black py-3 font-semibold text-white hover:bg-gray-800 disabled:opacity-50">{loading ? 'Sending…' : 'Send link'}</button></div>
         </form>
       ) : (
-        <form onSubmit={handleSubmit} className="w-full space-y-5">
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-            <input
-              id="email"
-              type="email"
-              autoComplete="email"
-              className="w-full px-4 py-3 rounded-full border border-gray-200 bg-gray-50 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none text-black transition placeholder-gray-400 shadow-sm"
-              placeholder="you@email.com"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              required
-              aria-invalid={!!error}
-              aria-describedby="login-error"
-            />
-          </div>
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-            <input
-              id="password"
-              type="password"
-              autoComplete="current-password"
-              className="w-full px-4 py-3 rounded-full border border-gray-200 bg-gray-50 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none text-black transition placeholder-gray-400 shadow-sm"
-              placeholder="Your password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              required
-              minLength={6}
-              aria-invalid={!!error}
-              aria-describedby="login-error"
-            />
-          </div>
-          {error && <div id="login-error" className="text-red-600 text-sm font-medium">{error}</div>}
-          <button
-            type="submit"
-            className="w-full bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold py-3 rounded-full shadow-sm hover:from-blue-600 hover:to-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300 transition-all duration-200 text-lg mt-2"
-            disabled={loading}
-          >
-            {loading ? 'Logging in...' : 'Login'}
-          </button>
-          <div className="text-center mt-4">
-            <button type="button" onClick={() => setShowReset(true)} className="text-blue-600 hover:underline text-sm">Forgot your password?</button>
-          </div>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div><label htmlFor="email" className="mb-2 block text-sm font-semibold text-gray-700">Email address</label><div className="relative"><Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} /><input id="email" type="email" autoComplete="email" className={inputClass} placeholder="you@email.com" value={email} onChange={(event) => setEmail(event.target.value)} required aria-invalid={!!error} aria-describedby="login-error" /></div></div>
+          <div><div className="mb-2 flex items-center justify-between"><label htmlFor="password" className="text-sm font-semibold text-gray-700">Password</label><button type="button" onClick={() => setShowReset(true)} className="text-xs font-semibold text-gray-500 hover:text-black">Forgot password?</button></div><div className="relative"><KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} /><input id="password" type="password" autoComplete="current-password" className={inputClass} placeholder="At least 6 characters" value={password} onChange={(event) => setPassword(event.target.value)} required minLength={6} aria-invalid={!!error} aria-describedby="login-error" /></div></div>
+          {error && <div id="login-error" className="rounded-2xl bg-red-50 px-4 py-3 text-sm leading-5 text-red-700" role="alert">{error}</div>}
+          <button type="submit" className="flex w-full items-center justify-center gap-2 rounded-full bg-black py-3.5 font-semibold text-white transition hover:-translate-y-0.5 hover:bg-gray-800 disabled:translate-y-0 disabled:opacity-50" disabled={loading}>{loading ? 'Logging in…' : <>Log in <ArrowRight size={17} /></>}</button>
         </form>
       )}
-      <div className="w-full flex flex-col items-center mt-6 space-y-2">
-        <div className="text-sm text-gray-500">Don&apos;t have an account? <button type="button" className="text-blue-600 font-medium hover:underline" onClick={onSignupClick}>Sign up</button></div>
-      </div>
+      <div className="mt-7 border-t border-gray-100 pt-6 text-center text-sm text-gray-500">New to DevConnect? <button type="button" className="font-semibold text-black hover:underline" onClick={onSignupClick}>Create an account</button></div>
     </div>
   );
 };
